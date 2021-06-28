@@ -12,6 +12,7 @@ router.post("/signup", async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({ errorMessage: "please enter all fields" });
     }
+    //check for existing user in Db
     const existingUser = await User.findOne({ email: email });
     if (existingUser) {
       return res.status(400).json({ errorMessage: "email already exists" });
@@ -21,7 +22,7 @@ router.post("/signup", async (req, res) => {
     const passwordHash = await bcrypt.hash(password, salt);
 
     //save new user to DB
-    const newUser = new User({ email, passwordHash });
+    const newUser = new User({email, passwordHash });
     const savedUser = await newUser.save();
 
     //sign the token
@@ -35,8 +36,7 @@ router.post("/signup", async (req, res) => {
     // send token to HTTP-only cookie
     res.cookie("cookieToken", token, { httpOnly: true }).send();
   } catch (err) {
-    console.error(err);
-    res.status(500).send();
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -67,8 +67,7 @@ router.post("/login", async (req, res) => {
     res.cookie("cookieToken", token, { httpOnly: true }).send();
 
   } catch (err) {
-    console.error(err);
-    res.status(500).send();
+    res.status(500).json({ message: err.message });
   }
 });
 
@@ -78,25 +77,21 @@ router.get("/logout", (req, res) => {
   res.cookie("cookieToken", "", { httpOnly: true, expires: new Date(0) }).send();
 })
 
+
 // validate loggedin user
 router.get("/loggedin", (req, res) => {
-    try {
-      const token = req.cookies.cookieToken;
-      if (!token)
-        return res.json(false);
+  try {
+    const token = req.cookies.cookieToken;
+    if (!token)
+      return res.json(false);
 
-      //verify loggedin token 
-      jwt.verify(token, process.env.JWT_SECRET_KEY);
-      res.send(true);
-    }
-    catch (err) {
-      res.json(false);
-    }
+    //verify loggedin token 
+    jwt.verify(token, process.env.JWT_SECRET_KEY);
+    res.send(true);
+  }
+  catch (err) {
+    res.json(false);
+  }
 })
-
-
-
-
-
 
 module.exports = router;
