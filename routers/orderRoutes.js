@@ -63,7 +63,7 @@ router.delete("/:orderId/cancel",auth, async (req, res) => {
 });
 
 //create order
-router.post("/:userId/orders",auth, async (req, res) => {
+router.post("/:userId/create",auth, async (req, res) => {
   // router.post("/",auth, async (req, res) => {
 
   try {
