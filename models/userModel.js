@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 
 const userSchema = new mongoose.Schema({
 
-    email:{type:String,required:true},
-    passwordHash:{type:String, required:true},
-    myorders:[{ type:Schema.Types.ObjectId, ref: 'ParcelOrder'}]
+    email: { type: String, required: true },
+    passwordHash: { type: String, required: true },
+
 });
 
-const User = mongoose.model("User",userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;
