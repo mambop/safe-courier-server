@@ -19,13 +19,13 @@ app.use(cookieParser());
 
 //allow client make req,res & save cookie 
 app.use(cors({
-  origin:["http://localhost:3000"],
+  origin:["safe-courier-phillip.netlify.app"],
   credentials:true
 }));
 
 //connect to mongoDB
 mongoose.connect(
-  process.env.DB_URL_LOC,
+  process.env.DB_URL_DEV,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
@@ -43,8 +43,3 @@ app.use("/api/v1/auth", userRoutes);
 app.use("/api/v1/users", orderRoutes);
 app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/orders", orderRoutes);
-
-
-app.get((req, res) => {
-  res.send("WELCOME SAFE COURIER");
-})

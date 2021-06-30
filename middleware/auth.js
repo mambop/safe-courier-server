@@ -8,6 +8,7 @@ function auth(req, res, next) {
 
         //verify token 
         const verified = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        req.userId = verified.user;
         next();
     }
     catch (err) {

@@ -8,8 +8,8 @@ const auth = require("../middleware/auth");
 router.get("/",auth,async (req, res) => {
   try {
     const getAllParcels = await Order.find()
-      .populate('user', 'email')
-      .exec()
+      .populate('createdBy', 'email')
+
     res.json(getAllParcels);
 
   } catch (err) {
@@ -21,8 +21,7 @@ router.get("/",auth,async (req, res) => {
 router.get("/:orderId", async (req, res) => {
   try {
     const getOneOrder = await Order.findById(req.params.orderId)
-      .populate('user', 'email')
-      .exec()
+   
     res.json(getOneOrder);
 
   } catch (err) {
@@ -34,10 +33,9 @@ router.get("/:orderId", async (req, res) => {
 router.get("/:userId/orders",auth, async (req, res) => {
   try {
 
-    const singleUser = await Order.find({ user: req.params.userId })
-      .populate('user', 'email')
-      .exec()
-    res.json(singleUser);
+    const userOrders = await Order.find({createdBy:req.userId});
+   
+    res.json(userOrders);
 
   } catch (err) {
 
@@ -46,15 +44,11 @@ router.get("/:userId/orders",auth, async (req, res) => {
 });
 
 // cancel order
-router.delete("/:orderId/cancel",auth, async (req, res) => {
+router.delete("/cancel/:id",auth, async (req, res) => {
   try {
-    const orders = await Order.findByIdAndDelete(req.params.orderId)
-      .populate('user', 'email')
-      .exec()
-    res.json({
-      message: 'Cancelled Order',
-      order: orders
-    });
+    const id =req.params.id
+    await Order.findByIdAndRemove(id).exec();
+     res.send("deleted");
 
   } catch (err) {
     console.error(err);
@@ -63,13 +57,12 @@ router.delete("/:orderId/cancel",auth, async (req, res) => {
 });
 
 //create order
-router.post("/:userId/create",auth, async (req, res) => {
-  // router.post("/",auth, async (req, res) => {
+  router.post("/",auth, async (req, res) => {
 
   try {
     _id = req.params.userId;
     const newOrder = new Order({
-      user: _id,
+      createdBy: req.userId,
       name:req.body.name,
       contact: req.body.contact,
       order: req.body.order,
@@ -86,17 +79,15 @@ router.post("/:userId/create",auth, async (req, res) => {
 });
 
 //change destination of order
-router.put("/:orderId/destination",auth, async (req, res) => {
+router.put("/destination",auth, async (req, res) => {
+  const newDestination  = req.body.destination
+  const id = req.body.id
   try {
-    await Order.findOneAndUpdate({
-      _id: req.params.orderId
-    },
-      {
-        destination: req.body.destination
-      })
-    res.json({
-      message: 'Update Successful',
-    });
+    await Order.findById(id, (err, updateDestination) =>{
+      updateDestination.destination = newDestination
+      updateDestination.save();
+      res.send("Updated")
+    })
 
   } catch (err) {
     console.error(err);

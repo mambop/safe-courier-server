@@ -91,19 +91,16 @@ router.get("/",auth, async (req, res) => {
 
 
 
-//change status of order by only Admin
-router.put("/orders/:orderId/status",auth, async (req, res) => {
+//change present location of order
+router.put("/presentLoc",auth, async (req, res) => {
+  const newPresentLoc  = req.body.presentLoc
+  const id = req.body.id
   try {
-    const status = await Order.findOneAndUpdate({
-      _id: req.params.orderId
-    },
-      {
-        status: req.body.status
-      },
-      {
-        new: true,
-      });
-    return res.json(status);
+    await Order.findById(id, (err, updatePresentLoc) =>{
+      updatePresentLoc.presentLoc = newPresentLoc
+      updatePresentLoc.save();
+      res.send("Updated")
+    })
 
   } catch (err) {
     console.error(err);
@@ -111,19 +108,17 @@ router.put("/orders/:orderId/status",auth, async (req, res) => {
   }
 });
 
-//change present location of order by only Admin
-router.put("/orders/:orderId/presentLocation",auth, async (req, res) => {
+
+//change status of order
+router.put("/status",auth, async (req, res) => {
+  const newStatus  = req.body.status
+  const id = req.body.id
   try {
-    const presentLoc = await Order.findOneAndUpdate({
-      _id: req.params.orderId
-    },
-      {
-        presentLoc: req.body.presentLoc
-      },
-      {
-        new: true,
-      });
-    return res.status(200).json(presentLoc);
+    await Order.findById(id, (err, updateStatus) =>{
+      updateStatus.status = newStatus
+      updateStatus.save();
+      res.send("Updated")
+    })
 
   } catch (err) {
     console.error(err);
