@@ -18,16 +18,16 @@ app.use(express.json());
 app.use(cookieParser());
 
 //allow client make req,res & save cookie 
-app.use(cors({
-  origin:["safe-courier-phillip.netlify.app"],
-  credentials:true
-}));
+// app.use(cors({
+//   origin:["safe-courier-phillip.netlify.app"],
+//   credentials:true
+// }));
 
 app.use(cors({credentials:true}));
 
 //connect to mongoDB
 mongoose.connect(
-  process.env.DB_URL_DEV,
+  process.env.DB_URL_,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
