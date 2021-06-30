@@ -23,6 +23,8 @@ app.use(cors({
   credentials:true
 }));
 
+app.use(cors({credentials:true}));
+
 //connect to mongoDB
 mongoose.connect(
   process.env.DB_URL_DEV,
