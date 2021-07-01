@@ -19,7 +19,7 @@ app.use(cookieParser());
 
 //allow client make req,res & save cookie 
 app.use(cors({
-  origin:["https://safe-courier-phillip.netlify.app","https://safe-courier-app.herokuapp.com/"],
+  origin:["https://safe-courier-phillip.netlify.app","https://safe-courier-app.herokuapp.com","http://localhost:3000"],
   credentials:true
 }));
 

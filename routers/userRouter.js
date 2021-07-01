@@ -90,7 +90,8 @@ router.get("/loggedin", (req, res) => {
     res.send(true);
   }
   catch (err) {
-    res.json(false);
+    // res.json(false);
+    res.json({Message:"err"})
   }
 })
 
