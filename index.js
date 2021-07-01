@@ -17,16 +17,17 @@ app.listen(PORT, () => console.log(`server started on port ${PORT}`));
 app.use(express.json());
 app.use(cookieParser());
 
-//allow client make req,res & save cookie 
+// allow client make req,res & save cookie 
 app.use(cors({
-  origin:["https://safe-courier-phillip.netlify.app","https://safe-courier-app.herokuapp.com","http://localhost:3000"],
+  origin:["https://safe-courier-phillip.netlify.app","http://localhost:3000"],
   credentials:true
 }));
 
 
+
 //connect to mongoDB
 mongoose.connect(
-  process.env.DB_URL_DEV,
+  process.env.DB_URL_LOC,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true

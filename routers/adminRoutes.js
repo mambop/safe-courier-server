@@ -95,6 +95,7 @@ router.get("/",auth, async (req, res) => {
 router.put("/presentLoc",auth, async (req, res) => {
   const newPresentLoc  = req.body.presentLoc
   const id = req.body.id
+
   try {
     await Order.findById(id, (err, updatePresentLoc) =>{
       updatePresentLoc.presentLoc = newPresentLoc

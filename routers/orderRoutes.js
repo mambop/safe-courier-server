@@ -44,9 +44,9 @@ router.get("/:userId/orders",auth, async (req, res) => {
 });
 
 // cancel order
-router.delete("/cancel/:id",auth, async (req, res) => {
+router.delete("/cancel/:orderId",auth, async (req, res) => {
   try {
-    const id =req.params.id
+    const id =req.params.orderId
     await Order.findByIdAndRemove(id).exec();
      res.send("deleted");
 

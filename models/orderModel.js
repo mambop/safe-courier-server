@@ -9,8 +9,8 @@ const orderSchema = new mongoose.Schema({
     order: { type: String, required: true },
     pickup: { type: String, required: true },
     destination: { type: String, required: true },
-    status: { type: String, default: '' },
-    presentLoc: { type: String, default: '' },
+    status: { type: String},
+    presentLoc: { type: String},
 
 
 });
